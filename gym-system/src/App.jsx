@@ -15,6 +15,10 @@ import AdminPanel from './pages/AdminPanel';
 import OwnerProfile from './pages/owner/OwnerProfile';
 import GymSettings from './pages/owner/GymSettings';
 import Billing from './pages/owner/Billing';
+import FinanceView from './views/FinanceView';
+import BlogView from './views/BlogView';
+// Components
+import RoleRoute from './components/auth/RoleRoute';
 
 const App = () => {
   return (
@@ -24,7 +28,8 @@ const App = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />
-      <Route path="/resetpassword/:token" element={<ResetPassword />} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
+      <Route path="/BlogView" element={<BlogView />} />
 
       {/* Private/Member Routes */}
       {/* (In a real app, we would wrap this in a <ProtectedRoute> component) */}
@@ -32,10 +37,13 @@ const App = () => {
       <Route path="/AboutUs" element={<AboutUs />} />
       <Route path="/payment" element={<PaymentPage />} />
       <Route path="/plan-details" element={<PlanDetails />} />
-      <Route path="/admin" element={<AdminPanel />} /> 
+      <Route path="/admin" element={<AdminPanel />} />
       <Route path="/owner/profile" element={<OwnerProfile />} />
       <Route path="/owner/settings" element={<GymSettings />} />
       <Route path="/owner/billing" element={<Billing />} />
+      <Route element={<RoleRoute allowedRoles={['admin', 'manager']} />}>
+        <Route path="/finance" element={<FinanceView />} />
+      </Route>
 
       {/* Catch-all: Redirect unknown URLs to Home */}
       <Route path="*" element={<Navigate to="/" replace />} />

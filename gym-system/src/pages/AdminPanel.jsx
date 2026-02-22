@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { 
   LayoutDashboard, Users, Dumbbell, DollarSign, 
-  LogOut, Bell, Search, Menu, X, Plus, UserCog 
+  LogOut, Bell, Search, Menu, X, Plus, UserCog, UserPlus 
 } from 'lucide-react';
 
 // --- VIEW IMPORTS ---
-// Adjust these paths if your folders are different (e.g., remove '..' if in same folder)
 import DashboardHome from '../views/DashboardHome'; 
 import MembersView from '../views/MembersView';
 import FinanceView from '../views/FinanceView';
 import EquipmentView from '../views/EquipmentView';
-import TrainersView from '../views/TrainersView'; // Ensure you created this file
+import LeadsView from '../views/LeadsView'; // Fixed import name to match component
+import TrainersView from '../views/TrainersView';
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -20,19 +20,16 @@ const AdminPanel = () => {
   const TopBar = () => (
     <div className="h-16 bg-zinc-950 border-b border-zinc-800 flex items-center justify-between px-6 sticky top-0 z-20">
       
-      {/* Left Side: Mobile Menu & Title */}
       <div className="flex items-center gap-4">
         <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden text-zinc-400">
           <Menu />
         </button>
         <h2 className="text-white font-bold text-lg hidden md:block capitalize">
-          {activeTab} Management
+          {activeTab.replace('-', ' ')} Management
         </h2>
       </div>
 
-      {/* Right Side: Branch Selector & Actions */}
       <div className="flex items-center gap-6">
-        
         {/* MULTI-BRANCH SELECTOR */}
         <div className="hidden md:flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded-full px-4 py-1.5">
            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
@@ -53,7 +50,6 @@ const AdminPanel = () => {
           />
         </div>
         
-        {/* Quick Actions */}
         <button className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full shadow-lg shadow-red-900/20">
           <Plus size={20} />
         </button>
@@ -63,7 +59,8 @@ const AdminPanel = () => {
           <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
         </div>
         
-        <div className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-xs font-bold text-white">
+        {/* Profile Circle - KA for Kartik Agarwal */}
+        <div className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-xs font-bold text-white" title="Admin: Kartik Agarwal">
           KA
         </div>
       </div>
@@ -74,6 +71,7 @@ const AdminPanel = () => {
   const renderContent = () => {
     switch (activeTab) {
       case 'overview': return <DashboardHome />;
+      case 'leads': return <LeadsView />;
       case 'members': return <MembersView />;
       case 'trainers': return <TrainersView />;
       case 'finance': return <FinanceView />;
@@ -82,11 +80,9 @@ const AdminPanel = () => {
     }
   };
 
-  // --- 3. MAIN LAYOUT RENDER ---
   return (
     <div className="min-h-screen bg-black text-zinc-300 font-sans flex">
-      
-      {/* Sidebar (Desktop & Mobile) */}
+      {/* Sidebar */}
       <aside className={`fixed inset-y-0 left-0 z-30 w-64 bg-zinc-950 border-r border-zinc-800 transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="p-6 flex justify-between items-center">
           <h1 className="text-2xl font-black tracking-tighter text-white">IRON<span className="text-red-600">CORE</span></h1>
@@ -95,6 +91,7 @@ const AdminPanel = () => {
 
         <nav className="px-4 space-y-2 mt-4">
           <NavItem id="overview" icon={<LayoutDashboard size={20}/>} label="Dashboard" active={activeTab} set={setActiveTab} />
+          <NavItem id="leads" icon={<UserPlus size={20}/>} label="Leads" active={activeTab} set={setActiveTab} />
           <NavItem id="members" icon={<Users size={20}/>} label="Members" active={activeTab} set={setActiveTab} />
           <NavItem id="trainers" icon={<UserCog size={20}/>} label="Trainers" active={activeTab} set={setActiveTab} />
           <NavItem id="finance" icon={<DollarSign size={20}/>} label="Finance" active={activeTab} set={setActiveTab} />
@@ -108,7 +105,6 @@ const AdminPanel = () => {
         </div>
       </aside>
 
-      {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
         <TopBar />
         <main className="flex-1 overflow-y-auto p-6 md:p-8">
@@ -119,7 +115,6 @@ const AdminPanel = () => {
   );
 };
 
-// --- SUB-COMPONENT: Nav Button ---
 const NavItem = ({ id, icon, label, active, set }) => (
   <button
     onClick={() => set(id)}

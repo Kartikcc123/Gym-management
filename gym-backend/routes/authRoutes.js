@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-// Import the controller functions
 const { 
   registerUser, 
   loginUser, 
@@ -18,7 +17,9 @@ router.post('/login', loginUser);
 router.get('/me', protect, getMe);
 
 // Forgot Password Routes
-router.post('/forgotpassword', forgotPassword);
+// FIX: Added the hyphen to match the frontend request
+router.post('/forgot-password', forgotPassword); 
+
 router.put('/resetpassword/:resettoken', resetPassword);
 
 module.exports = router;

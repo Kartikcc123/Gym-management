@@ -8,18 +8,18 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Initialize Session
+  // Initialize Session on Load
   useEffect(() => {
     const initializeAuth = () => {
-      const storedUser = localStorage.getItem('gym_user');
-      const token = localStorage.getItem('gym_token');
-
-      if (storedUser && token) {
+      // FIX: Use 'user' to match what authService saves
+      const storedUser = localStorage.getItem('user'); 
+      
+      if (storedUser) {
         try {
             setUser(JSON.parse(storedUser));
         } catch (e) {
             console.error("Data corruption detected");
-            localStorage.clear();
+            localStorage.removeItem('user'); // Clear bad data
         }
       }
       setIsLoading(false);
@@ -27,18 +27,19 @@ export const AuthProvider = ({ children }) => {
     initializeAuth();
   }, []);
 
+  // --- LOGIN ---
   const login = async (email, password) => {
     setIsLoading(true);
     setError(null);
     try {
+      // FIX: authService.login returns the data directly. We do NOT use .data here.
       const response = await authService.login(email, password);
       
-      const { user, token } = response.data;
-      
-      localStorage.setItem('gym_token', token);
-      localStorage.setItem('gym_user', JSON.stringify(user));
-      setUser(user);
-      return user;
+      // If your backend returns { user: {...}, token: '...' }
+      // We don't need to manually setItem here if authService already did it,
+      // but doing it here updates the state instantly.
+      setUser(response.user); 
+      return response.user;
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed.');
       throw err;
@@ -47,17 +48,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // --- REGISTER ---
   const register = async (userData) => {
     setIsLoading(true);
     setError(null);
     try {
+      // FIX: Same here. authService.register returns the data directly.
       const response = await authService.register(userData);
-      const { user, token } = response.data;
       
-      localStorage.setItem('gym_token', token);
-      localStorage.setItem('gym_user', JSON.stringify(user));
-      setUser(user);
-      return user;
+      setUser(response.user);
+      return response.user;
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed.');
       throw err;
@@ -66,18 +66,19 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // --- LOGOUT ---
   const logout = () => {
     authService.logout();
     setUser(null);
-    window.location.href = '/'; 
+    window.location.href = '/login'; 
   };
 
-  // Updates local state immediately (useful for instant UI feedback)
+  // Update Profile Helper
   const updateProfile = (updates) => {
     if (!user) return;
     const updatedUser = { ...user, ...updates };
     setUser(updatedUser);
-    localStorage.setItem('gym_user', JSON.stringify(updatedUser));
+    localStorage.setItem('user', JSON.stringify(updatedUser));
   };
 
   const value = {
@@ -88,7 +89,7 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
-    updateProfile
+    updateProfile,
   };
 
   return (
@@ -98,3 +99,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+export default AuthContext;

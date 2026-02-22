@@ -1,0 +1,1 @@
+router.get('/monthly', protect, authorize('admin'), getMonthlyFinance);

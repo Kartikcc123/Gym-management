@@ -5,37 +5,57 @@ const authService = {
    * Register a new user
    */
   register: async (userData) => {
-    return api.post('/auth/register', userData);
+    const response = await api.post('/auth/register', userData);
+    if (response.data.token) {
+      localStorage.setItem('user', JSON.stringify(response.data));
+    }
+    return response.data;
   },
 
   /**
    * Login existing user
    */
   login: async (email, password) => {
-    return api.post('/auth/login', { email, password });
-  },
-
-  forgotPassword: async (email) => {
-    return api.post('/auth/forgotpassword', { email });
-  },
-
-  resetPassword: async (token, password) => {
-    return api.put(`/auth/resetpassword/${token}`, { password });
+    const response = await api.post('/auth/login', { email, password });
+    if (response.data.token) {
+      localStorage.setItem('user', JSON.stringify(response.data));
+    }
+    return response.data;
   },
 
   /**
-   * Logout (Client side cleanup)
+   * Send Password Reset Email
+   */
+  forgotPassword: async (email) => {
+    const response = await api.post('/auth/forgot-password', { email });
+    return response.data;
+  },
+
+  /**
+   * Reset Password (using token)
+   */
+  resetPassword: async (token, password) => {
+    // Note: This matches the backend route /resetpassword/:resettoken
+    const response = await api.put(`/auth/resetpassword/${token}`, { password });
+    return response.data;
+  },
+
+  /**
+   * Logout
+   * FIXED: Now removes 'user' (which is what login sets)
    */
   logout: () => {
-    localStorage.removeItem('gym_token');
-    localStorage.removeItem('gym_user');
+    localStorage.removeItem('user');
+    // Reload page to clear any global states if necessary
+    // window.location.href = '/login'; 
   },
 
   /**
    * Get current user profile
    */
   getMe: async () => {
-    return api.get('/auth/me');
+    const response = await api.get('/auth/me');
+    return response.data;
   }
 };
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Facebook, Instagram, Twitter, Youtube, Mail, MapPin, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import BlogView from '../../views/BlogView';
 
 const Footer = () => {
   return (
@@ -29,7 +30,7 @@ const Footer = () => {
             <ul className="space-y-4 text-sm">
               <li><Link to="/about" className="hover:text-red-500 transition-colors">About Us</Link></li>
               <li><Link to="/careers" className="hover:text-red-500 transition-colors">Careers</Link></li>
-              <li><Link to="/blog" className="hover:text-red-500 transition-colors">Fitness Blog</Link></li>
+              <li><Link to="/BlogView" className="hover:text-red-500 transition-colors">Fitness Blogs</Link></li>
               <li><Link to="/press" className="hover:text-red-500 transition-colors">Press</Link></li>
             </ul>
           </div>

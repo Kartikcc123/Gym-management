@@ -6,8 +6,8 @@ const PlanSelection = ({ onSubscribe }) => {
   
   // 1. Define Currency Options & Rates
   const currencies = [
-    { code: 'USD', symbol: '$', rate: 1, name: 'United States' },
     { code: 'INR', symbol: '₹', rate: 83.5, name: 'India' },
+    { code: 'USD', symbol: '$', rate: 1, name: 'United States' },
     { code: 'EUR', symbol: '€', rate: 0.92, name: 'Europe' },
     { code: 'GBP', symbol: '£', rate: 0.79, name: 'United Kingdom' },
     { code: 'AUD', symbol: 'A$', rate: 1.52, name: 'Australia' },

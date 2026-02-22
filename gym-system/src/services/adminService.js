@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 1. SETUP API BASE URL
 // Change this to match your backend port (e.g., 5000, 8000)
-const API_URL = 'http://localhost:5000/api/auth'; 
+const API_URL = 'http://localhost:5000/api/v1/auth'; 
 
 // 2. REGISTER USER
 const register = async (userData) => {
@@ -25,7 +25,7 @@ const login = async (email, password) => {
 // 4. FORGOT PASSWORD (This fixes your issue)
 const forgotPassword = async (email) => {
   // This sends the email to your backend route
-  const response = await axios.post(`${API_URL}/forgot-password`, { email });
+  const response = await axios.post(`${API_URL}/forgotpassword`, { email });
   return response.data;
 };
 

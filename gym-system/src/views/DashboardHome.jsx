@@ -148,4 +148,34 @@ const TaskItem = ({ title, tag, color, time }) => (
   </div>
 );
 
+const ExpiryWidget = ({ members }) => {
+  if (!members || members.length === 0) return null;
+
+  return (
+    <div className="bg-zinc-900 border border-red-900/30 p-5 rounded-xl mb-6">
+      <h3 className="text-red-400 font-bold flex items-center gap-2 mb-4">
+        <AlertTriangle size={20} /> Membership Expiring Soon (7 Days)
+      </h3>
+      <div className="space-y-3">
+        {members.map(m => (
+          <div key={m._id} className="flex justify-between items-center bg-black/50 p-3 rounded-lg border border-zinc-800">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-xs font-bold">
+                {m.name.charAt(0)}
+              </div>
+              <div>
+                <p className="text-sm font-bold text-white">{m.name}</p>
+                <p className="text-xs text-zinc-500">Ends: {new Date(m.endDate).toLocaleDateString()}</p>
+              </div>
+            </div>
+            <button className="text-xs bg-red-600/20 text-red-400 px-3 py-1 rounded hover:bg-red-600 hover:text-white transition">
+              Renew
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export default DashboardHome;
