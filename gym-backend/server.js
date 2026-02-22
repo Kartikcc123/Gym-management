@@ -3,43 +3,49 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
 
-// Load environment variables
+// Load env variables
 dotenv.config();
 
-// Connect to MongoDB
+// Connect Database
 connectDB();
 
 const app = express();
 
 /* ======================
-   Middleware
+   CORS CONFIG
 ====================== */
 app.use(
   cors({
-    origin: ["https://gym-management-3-nbyv.onrender.com"], // React / Vite frontend
+    origin: [
+      "https://gym-management-3-nbyv.onrender.com", // Production frontend
+      "http://localhost:5173", // Local Vite dev
+    ],
     credentials: true,
   })
 );
 
+/* ======================
+   BODY PARSER
+====================== */
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 /* ======================
-   Routes
+   ROUTES
 ====================== */
 
 // Auth Routes
 app.use("/api/v1/auth", require("./routes/authRoutes"));
 
 /* ======================
-   Health Check
+   HEALTH CHECK
 ====================== */
 app.get("/", (req, res) => {
-  res.status(200).send("IronForge Gym API is running 🚀");
+  res.status(200).send("🚀 IronForge Gym API Running");
 });
 
 /* ======================
-   Error fallback
+   404 FALLBACK
 ====================== */
 app.use((req, res) => {
   res.status(404).json({
@@ -49,10 +55,10 @@ app.use((req, res) => {
 });
 
 /* ======================
-   Server
+   SERVER
 ====================== */
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () =>
-  console.log(`🔥 Server running on http://localhost:${PORT}`)
-);
+app.listen(PORT, () => {
+  console.log(`🔥 Server running on port ${PORT}`);
+});
