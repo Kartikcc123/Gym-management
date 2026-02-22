@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 1. Create the Axios Instance
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1', // Load from .env
+  baseURL: import.meta.env.VITE_API_URL || 'https://gym-management-1-vidi.onrender.com/', // Load from .env
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

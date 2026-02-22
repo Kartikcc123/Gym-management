@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 1. SETUP API BASE URL
 // Change this to match your backend port (e.g., 5000, 8000)
-const API_URL = 'http://localhost:5000/api/v1/auth'; 
+const API_URL = 'https://gym-management-1-vidi.onrender.com/'; 
 
 // 2. REGISTER USER
 const register = async (userData) => {
