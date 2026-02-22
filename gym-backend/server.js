@@ -16,7 +16,7 @@ const app = express();
 ====================== */
 app.use(
   cors({
-    origin: ["http://localhost:5173"], // React / Vite frontend
+    origin: ["https://gym-management-3-nbyv.onrender.com"], // React / Vite frontend
     credentials: true,
   })
 );
